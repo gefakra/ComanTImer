@@ -1,0 +1,36 @@
+﻿@page "/"
+
+<PageTitle>Index</PageTitle>
+
+<div class="container-fluid">
+    <div class="row mt-4 h2 text-success">
+        <div class="col"></div>
+        <div class="col-auto"> @roomTimer.Minutes </div>
+        <div class="col-auto p-0"> : </div>
+        <div class="col-auto"> @roomTimer.Seconds </div>
+        <div class="col"></div>
+    </div>  
+</div>
+<button class="btn btn-primary" @onclick="StartTimerAsync" >Старт</button>
+@code {
+    int periud = 300;
+    private TimeSpan roomTimer = new TimeSpan(0, 0, 0);   
+
+    async Task StartTimerAsync()
+    {
+       roomTimer = TimeSpan.Zero;
+        while (periud > roomTimer.TotalSeconds)
+            await CountDownAsync();        
+    }
+
+    async Task CountDownAsync()
+    {        
+        roomTimer = roomTimer.Add(TimeSpan.FromSeconds(1));        
+        await Task.Delay(1000);
+        await InvokeAsync(StateHasChanged);
+    }
+}
+
+
+
+
